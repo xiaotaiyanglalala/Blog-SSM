@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
+
+	<!-- 静态资源访问（不拦截此目录下的东西的访问） -->
+	<mvc:resources location="/WEB-INF/resource/" mapping="/**" />
+	<mvc:resources location="/WEB-INF/resources/" mapping="/style/**" />
+
+	<!-- 使用注解的包，包括子集 -->
+	<context:component-scan base-package="com.open.blog.controller" />
+	<!-- 通过注解，把URL映射到Controller上，该标签默认注册DefaultAnnotationHandlerMapping和AnnotationMethodHandlerAdapter -->
+	<mvc:annotation-driven />
+	<!-- 视图解析器,对模型视图名称的解析，即在模型视图名称添加前后缀 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/pages/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/" />
+			<mvc:mapping path="/admin/**"/>
+			<mvc:mapping path="/article/**"/>
+			<bean class="com.open.blog.interceptor.SpringInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+</beans>

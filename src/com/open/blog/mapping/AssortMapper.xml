@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.open.blog.dao.AssortDao">
+	
+	<resultMap type="com.open.blog.entity.Assort" id="assortResultMap">
+		<id column="id" jdbcType="INTEGER" property="id"/>
+		<result column="name" jdbcType="VARCHAR" property="name"/>
+		<result column="des" jdbcType="VARCHAR" property="des"/>
+		<result column="state" jdbcType="VARCHAR" property="state"/>
+	</resultMap>
+	
+	<select id="findAssortAll" resultMap="assortResultMap">
+		SELECT * FROM tb_assort t WHERE t.state = '1'
+	</select>
+</mapper>

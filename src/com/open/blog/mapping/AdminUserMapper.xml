@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.open.blog.dao.AdminUserDao">
+	
+	<resultMap type="com.open.blog.entity.AdminUser" id="adminResultMap">
+		<id column="id" jdbcType="INTEGER" property="uid"/>
+		<result column="username" jdbcType="INTEGER" property="username"/>
+		<result column="password" jdbcType="VARCHAR" property="password"/>
+		<result column="phone" jdbcType="VARCHAR" property="phone"/>
+		<result column="email" jdbcType="VARCHAR" property="email"/>
+		<result column="crtime" jdbcType="VARCHAR" property="crtime"/>
+		<result column="state" jdbcType="VARCHAR" property="state"/>
+		<result column="rid" jdbcType="INTEGER" property="rid"/>
+		<association property="role" javaType="com.open.blog.entity.Role">
+			<id column="id" jdbcType="INTEGER" property="rid"/>
+			<result column="name" jdbcType="VARCHAR" property="name"/>
+			<result column="introduce" jdbcType="VARCHAR" property="introduce"/>
+		</association>
+	</resultMap>
+	
+	<select id="findUserByRoleId" parameterType="INTEGER" resultMap="adminResultMap">
+		SELECT u.username FROM tb_admin_user u,tb_user_role ur WHERE u.id = ur.uid AND ur.rid = #{id}
+	</select>
+	
+	<select id="findAdminUser" resultMap="adminResultMap">
+		SELECT * FROM tb_admin_user
+	</select>
+	
+	<update id="adminStateUpdate">
+		UPDATE tb_admin_user u SET u.state = #{0} WHERE u.id = #{1}
+	</update>
+	
+	<select id="findAdminUserByUsername" parameterType="String" resultMap="adminResultMap">
+		SELECT * FROM tb_admin_user WHERE username = #{username}
+	</select>
+	
+	<select id="findAdminUserByUserId" parameterType="INTEGER" resultMap="adminResultMap">
+		SELECT * FROM tb_admin_user u,tb_user_role ur WHERE u.id = ur.uid AND ur.uid = #{id}
+	</select>
+	
+	<update id="updateAdminUserById" parameterType="com.open.blog.entity.AdminUser">
+		UPDATE tb_admin_user u, tb_user_role r SET u.username = #{username, jdbcType=VARCHAR},u.password = #{password, jdbcType=VARCHAR},
+		u.phone = #{phone, jdbcType=VARCHAR},u.email = #{email, jdbcType=VARCHAR},
+		r.rid = #{rid, jdbcType=INTEGER}
+		WHERE r.uid = u.id AND u.id = #{uid, jdbcType=INTEGER}
+	</update>
+	<insert id="addAdminUser" parameterType="com.open.blog.entity.AdminUser">
+		INSERT INTO tb_admin_user
+		(username, password, phone, email, crtime, state)
+		values (#{username, jdbcType=VARCHAR},#{password, jdbcType=VARCHAR},
+		#{phone, jdbcType=VARCHAR},#{email, jdbcType=VARCHAR},#{crtime, jdbcType=VARCHAR},
+		#{state, jdbcType=VARCHAR})
+	</insert>
+</mapper>

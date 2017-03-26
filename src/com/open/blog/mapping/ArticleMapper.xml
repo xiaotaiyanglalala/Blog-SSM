@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.open.blog.dao.ArticleDao">
+	
+	<resultMap type="com.open.blog.entity.Article" id="acticleResultMap">
+		<id column="id" jdbcType="INTEGER" property="id"/>
+		<result column="userid" jdbcType="INTEGER" property="userid"/>
+		<result column="title" jdbcType="VARCHAR" property="title"/>
+		<result column="introduce" jdbcType="VARCHAR" property="introduce"/>
+		<result column="content" jdbcType="VARCHAR" property="content"/>
+		<result column="looknum" jdbcType="INTEGER" property="lookNum"/>
+		<result column="ctime" jdbcType="VARCHAR" property="ctime"/>
+		<result column="source" jdbcType="VARCHAR" property="source"/>
+		<result column="assortid" jdbcType="INTEGER" property="assortid"/>
+		<result column="state" jdbcType="VARCHAR" property="state"/>
+		<result column="author" jdbcType="VARCHAR" property="author"/>
+		<result column="omititle" jdbcType="VARCHAR" property="omititle"/>
+		<result column="keyword" jdbcType="VARCHAR" property="keyword"/>
+		<association property="assort" javaType="com.open.blog.entity.Assort">
+			<id column="id" jdbcType="INTEGER" property="id"/>
+			<result column="name" jdbcType="INTEGER" property="name"/>
+			<result column="des" jdbcType="VARCHAR" property="des"/>
+			<result column="state" jdbcType="VARCHAR" property="state"/>
+		</association>
+	</resultMap>
+	
+	<select id="findArticle" resultMap="acticleResultMap">
+		SELECT * FROM tb_article
+		limit #{0},#{1}
+	</select>
+	
+	<select id="findArticleById" parameterType="INTEGER" resultMap="acticleResultMap">
+		SELECT * FROM tb_article
+		WHERE id = #{id}
+	</select>
+	
+	<select id="queryArticleCount" parameterType="String" resultType="Integer">
+		SELECT COUNT(1) FROM tb_article
+	</select>
+	
+	<select id="findArticleAll" resultMap="acticleResultMap">
+		SELECT * FROM tb_article a,tb_assort t WHERE a.assortid = t.id
+	</select>
+	
+	<insert id="insertArticle" parameterType="com.open.blog.entity.Article">
+		INSERT INTO tb_article
+		(userid, title, introduce, content, looknum, ctime, state, assortid, source)
+		values (#{userid, jdbcType=INTEGER},#{title, jdbcType=VARCHAR},#{introduce, jdbcType=VARCHAR}
+		,#{content, jdbcType=VARCHAR},#{lookNum, jdbcType=INTEGER},#{ctime, jdbcType=VARCHAR}
+		,#{state, jdbcType=VARCHAR},#{assortid, jdbcType=INTEGER},#{source, jdbcType=VARCHAR}
+		,#{keyword, jdbcType=VARCHAR},#{author, jdbcType=VARCHAR},#{omititle, jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="deleteArticle" parameterType="INTEGER">
+		DELETE FROM tb_article WHERE id = #{id}
+	</update>
+	
+	<update id="updateArticle" parameterType="com.open.blog.entity.Article">
+		UPDATE tb_article a SET a.title = #{title, jdbcType=VARCHAR}, a.introduce = #{introduce, jdbcType=VARCHAR},
+		a.content = #{content, jdbcType=VARCHAR},a.source = #{source, jdbcType=VARCHAR},
+		a.keyword = #{keyword, jdbcType=VARCHAR},a.author = #{author, jdbcType=VARCHAR},
+		a.omititle = #{omititle, jdbcType=VARCHAR},a.assortid = #{assortid, jdbcType=INTEGER}
+		WHERE a.id=#{id, jdbcType=INTEGER}
+	</update>
+</mapper>
