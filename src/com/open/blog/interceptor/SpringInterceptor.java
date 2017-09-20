@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.Session;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -36,7 +35,7 @@ public class SpringInterceptor implements HandlerInterceptor {
 		HttpSession session = request.getSession();
 		AdminUser adminUser = (AdminUser) session.getAttribute(Global.USER_INFO);
 		List<Secqurity> secqurities = (List<Secqurity>) session.getAttribute(Global.SECQURITIES);
-		//是否登录验证,先判断是不是login请求，然后在判断是否登录过
+		//鏄惁鐧诲綍楠岃瘉,鍏堝垽鏂槸涓嶆槸login璇锋眰锛岀劧鍚庡湪鍒ゆ柇鏄惁鐧诲綍杩�
 		if(url.indexOf("login") >= 0) {
 			return true;
 		}

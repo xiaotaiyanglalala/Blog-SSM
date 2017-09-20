@@ -6,4 +6,6 @@ public class Global {
 	
 	public final static String SECQURITIES = "secqurities";
 	
+	public final static String TEXT = "text";
+	
 }
